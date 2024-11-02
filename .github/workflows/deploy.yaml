@@ -1,0 +1,35 @@
+name: Deploy to production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            cd /home/gitautomation/EventistryFrontend
+            git pull origin main
+            npm install
+            npm run build
+            echo "${{ secrets.SERVER_PASSWORD }}" | sudo -S cp -r dist/* /var/www/eventistry.hub.ke/
+            echo "${{ secrets.SERVER_PASSWORD }}" | sudo -S service nginx restart
+            echo "Done deploying"

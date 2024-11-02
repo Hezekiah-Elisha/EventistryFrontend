@@ -6,6 +6,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import SignInpage from "./pages/SignInpage";
 import SignupPage from "./pages/SignupPage";
 import ProductPage from "./pages/ProductPage";
+import Footer from "./layout/Footer";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="products/:productId" element={<ProductPage />} />
         <Route path="*" element={<NotFoundPage/>} />
       </Routes>
+    <Footer />
     </BrowserRouter>
   )
 }
