@@ -5,10 +5,10 @@ export default function Hero() {
     <div className='bg-primary text-center h-1/2 flex flex-col justify-center align-middle items-center gap-2'>
         <h1 className='text-3xl text-white'>Welcome Eventistry</h1>
         <p className='text-white'>The best place to find and book events instruments</p>
-        <div className='w-1/2 py-20'>
-            <div className='flex flex-between justify-between align-middle w-full rounded-full bg-white'>
-                <input type='text' placeholder='Search for instruments' className='border-none outline-none' />
-                <button className='flex flex-row gap-2'>
+        <div className='w-full md:w-1/2 py-20'>
+            <div className='flex flex-row flex-between justify-between align-middle w-full rounded-full bg-white'>
+                <input type='text' placeholder='Search for instruments' className='border-none outline-none w-3/4' />
+                <button className='flex flex-row gap-2 w-1/4'>
                     <MagnifyingGlassIcon className='text-white size-6' />
                     <span>
                         Search

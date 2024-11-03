@@ -10,6 +10,7 @@ Card.propTypes = {
   location: propTypes.string,
   image: propTypes.string,
   hot: propTypes.bool,
+  className: propTypes.string,
 };
 
 export default function Card({
@@ -19,11 +20,12 @@ export default function Card({
   location,
   image,
   hot,
+  className,
 }) {
   return (
     <Link
       to="products/1"
-      className="flex flex-col justify-start gap-2 w-1/4 hover:shadow-lg hover:cursor-pointer rounded-lg p-2"
+      className={className}
     >
       <div className="relative">
         <img
