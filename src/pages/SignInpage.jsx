@@ -22,7 +22,6 @@ export default function SignInpage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     try {
       dispatch(loginStart());
       const response = await instance.post("/auth/login", formData);
@@ -37,7 +36,7 @@ export default function SignInpage() {
 
   return (
     <div className="flex flex-col justify-center align-middle items-center text-center w-full h-screen">
-      <div className="w-5/12">
+      <div className="w-full md:w-7/12 lg:w-5/12">
         <h2 className="text-4xl font-poppins">Welcome back!</h2>
         <h3 className="text-sm">
           Don&apos;t have an account yet? <a href="/signup">Sign Up Now</a>
@@ -51,7 +50,7 @@ export default function SignInpage() {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
-              className="border-none outline-none"
+              className="border-none outline-none w-full"
               onChange={handleChange}
               name="password"
             />
