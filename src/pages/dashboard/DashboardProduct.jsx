@@ -106,8 +106,6 @@ export default function DashboardProduct() {
       formData.append("image", selectedFile);
     }
 
-
-
     try {
       await instance.post("/products", formData, config);
       fetchProducts();
@@ -121,6 +119,11 @@ export default function DashboardProduct() {
     fetchProducts();
     fetchCategories();
   }, []);
+
+  const getCategory = async (id) => {
+    const category = categories.find((category) => category.id === id);
+    return category ? category.name : "N/A";
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -136,7 +139,7 @@ export default function DashboardProduct() {
               isVisible={modalOpen}
               onClose={handleModal}
               content={
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <form onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-2">
                     <div className="flex flex-row justify-between">
                       <div className="flex flex-col">
@@ -234,7 +237,6 @@ export default function DashboardProduct() {
               <th className="py-3 px-4 text-center">Name</th>
               <th className="py-3 px-4 text-center">Price</th>
               <th className="py-3 px-4 text-center">Category</th>
-              <th className="py-3 px-4 text-center">Tags</th>
               <th className="py-3 px-4 text-center">Actions</th>
             </tr>
           </thead>
@@ -267,15 +269,20 @@ export default function DashboardProduct() {
                 <td className="py-3 px-4">{index + 1}</td>
                 <td className="py-3 px-4">
                   <img
-                    src={product.image}
+                    src={`https://api.eventistry.hub.ke/products/uploaded_image/${product.image}`}
                     alt={product.name}
                     className="h-12 w-12 rounded-full"
                   />
                 </td>
                 <td className="py-3 px-4">{product.name}</td>
                 <td className="py-3 px-4">{product.price}</td>
-                <td className="py-3 px-4">{product.category.name}</td>
-                <td className="py-3 px-4">{product.tags}</td>
+                <td className="py-3 px-4">
+                  {
+                    categories.find(
+                      (category) => category.id === product.category_id
+                    )?.name
+                  }
+                </td>
                 <td className="py-3 px-4">
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Edit
