@@ -16,3 +16,7 @@ button{
 input {
     @apply rounded-full py-4 px-10 font-poppins border border-slate-300 outline-primary focus:outline-none;
 }
+
+select {
+    @apply rounded-full py-4 px-10 font-poppins border border-slate-300 outline-primary focus:outline-none;
+}

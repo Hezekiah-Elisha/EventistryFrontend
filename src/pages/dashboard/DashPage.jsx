@@ -6,7 +6,7 @@ export default function DashPage() {
   return (
     <div className="flex flex-row">
       <SideNav />
-      <div>
+      <div className="p-3 w-full">
         <Outlet />
       </div>
     </div>

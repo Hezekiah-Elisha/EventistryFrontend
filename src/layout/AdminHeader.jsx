@@ -1,13 +1,18 @@
-import {
-  Bars3BottomRightIcon,
-  ShoppingCartIcon,
-} from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { logout } from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { instance } from "../api";
+import { useEffect, useState } from "react";
+import { Bars3BottomRightIcon } from "@heroicons/react/24/solid";
 
-export default function Header() {
+export default function AdminHeader() {
+  const { error, loading } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,44 +33,42 @@ export default function Header() {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentUser.access_token}`,
+      },
+    };
+    try {
+      const response = instance.delete("/auth/logout", config);
+      dispatch(logout());
+      navigate("/sign-in");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-5 bg-primary flex flex-row justify-between">
-      <Link to="/">
-        <h1 className="text-3xl text-white">Eventistry</h1>
-      </Link>
-      <div className="hidden md:flex flex-row justify-around align-middle gap-2 text-white">
-        <Link to="/" className="hover:bg-blue-950 p-2">
-          Home
-        </Link>
-        <Link to="/about" className="hover:bg-blue-950 p-2">
-          About
+      <div>
+        <Link to="/">
+          <h1 className="text-3xl text-white">Eventistry</h1>
         </Link>
       </div>
       <div className="hidden md:flex flex-row text-white justify-center align-middle">
-        <div className="flex flex-row relative gap-2">
-          <ShoppingCartIcon className="size-6 text-white" />
-          <sup className="absolute top-0 -right-3 bg-red-600 p-2 rounded-full text-white">
-            0
-          </sup>
-        </div>
         <Link to="/sign-up" className="hover:bg-blue-950 p-2">
-          Sign Up
+          Profile
         </Link>
-        <Link to="/sign-in" className="hover:bg-blue-950 p-2">
-          Sign In
-        </Link>
+        <div
+          className="hover:bg-blue-950 p-2 cursor-pointer"
+          onClick={handleLogout}
+        >
+          Sign Out
+        </div>
       </div>
-      <button
-        data-collapse-toggle="navbar-sticky"
-        type="button"
-        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-        aria-controls="navbar-sticky"
-        aria-expanded={isOpen}
-        onClick={toggleMenu}
-      >
-        <span className="sr-only">Open main menu</span>
-
-        <Bars3BottomRightIcon className="size-6 text-white" />
+      <button onClick={toggleMenu} className="md:hidden">
+        <Bars3BottomRightIcon className="h-6 w-6 text-white" />
       </button>
       {isOpen && (
         <div className="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden w-full font-montserrat">
@@ -104,29 +107,17 @@ export default function Header() {
               </div>
               <nav className="mt-6">
                 <div className="grid gap-7">
-                  <a
-                    href="#"
-                    className="flex items-center p-3 -m-3 text-lg font-medium text-gray-900 rounded-md hover:bg-white dark:text-gray-100 dark:hover:bg-white hover:text-primary"
-                  >
-                    Home
-                  </a>
-                  <a
-                    href="#info"
-                    className="flex items-center p-3 -m-3 text-lg font-medium text-gray-900 rounded-md hover:bg-white dark:text-gray-100 dark:hover:bg-white hover:text-primary"
-                  >
-                    About
-                  </a>
                   <Link
                     to="/sign-up"
                     className="flex items-center p-3 -m-3 text-lg font-medium text-gray-900 rounded-md hover:bg-white dark:text-gray-100 dark:hover:bg-white hover:text-primary"
                   >
-                    Sign up
+                    Profile
                   </Link>
                   <Link
                     to="/sign-in"
                     className="flex items-center p-3 -m-3 text-lg font-medium text-gray-900 rounded-md hover:bg-white dark:text-gray-100 dark:hover:bg-white hover:text-primary"
                   >
-                    Sign in
+                    Sign Out
                   </Link>
                 </div>
               </nav>

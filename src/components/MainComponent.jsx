@@ -12,7 +12,9 @@ import DashboardProfile from "../pages/dashboard/DashboardProfile";
 import DashboardSettings from "../pages/dashboard/DashboardSettings";
 import Footer from "../layout/Footer";
 import { useSelector } from "react-redux";
-import AdminHeader from "./AdminHeader";
+import AdminHeader from "../layout/AdminHeader";
+import DashboardCategory from "../pages/dashboard/DashboardCategory";
+import DashboardProduct from "../pages/dashboard/DashboardProduct";
 
 export default function MainComponent() {
   const { currentUser } = useSelector((state) => state.user);
@@ -33,6 +35,8 @@ export default function MainComponent() {
           <Route index element={<DashboardIndex />} />
           <Route path="profile" element={<DashboardProfile />} />
           <Route path="settings" element={<DashboardSettings />} />
+          <Route path="categories" element={<DashboardCategory />} />
+          <Route path="products" element={<DashboardProduct />} />
         </Route>
       </Routes>
       {user ? <div></div> : <Footer/>}
