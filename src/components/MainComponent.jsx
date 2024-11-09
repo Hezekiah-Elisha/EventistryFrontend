@@ -22,7 +22,7 @@ export default function MainComponent() {
 
   return (
     <BrowserRouter>
-      {user ? <AdminHeader/> : <Header />}
+      {user ? <AdminHeader /> : <Header />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
@@ -32,14 +32,14 @@ export default function MainComponent() {
         <Route path="*" element={<NotFoundPage />} />
 
         <Route path="dashboard" element={<PrivateRoute />}>
-          <Route index element={<DashboardIndex />} />
-          <Route path="profile" element={<DashboardProfile />} />
-          <Route path="settings" element={<DashboardSettings />} />
-          <Route path="categories" element={<DashboardCategory />} />
-          <Route path="products" element={<DashboardProduct />} />
-        </Route>
+            <Route index element={<DashboardIndex />} />
+            <Route path="profile" element={<DashboardProfile />} />
+            <Route path="settings" element={<DashboardSettings />} />
+            <Route path="categories" element={<DashboardCategory />} />
+            <Route path="products" element={<DashboardProduct />} />
+          </Route>
       </Routes>
-      {user ? <div></div> : <Footer/>}
+      {user ? <div></div> : <Footer />}
     </BrowserRouter>
   );
 }
