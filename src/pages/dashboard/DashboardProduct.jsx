@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { instance } from "../../api";
 import Modal from "../../components/Modal";
 
@@ -120,10 +120,21 @@ export default function DashboardProduct() {
     fetchCategories();
   }, []);
 
-  const getCategory = async (id) => {
-    const category = categories.find((category) => category.id === id);
-    return category ? category.name : "N/A";
-  };
+  const deleteProduct = async (id) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentUser.access_token}`,
+      },
+    };
+
+    try {
+      await instance.delete(`/products/${id}`, config);
+      fetchProducts();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -132,7 +143,7 @@ export default function DashboardProduct() {
           <h1 className="text-2xl font-bold">Products</h1>
         </div>
         <div>
-          <button onClick={handleModal}>Products</button>
+          <button onClick={handleModal}>Create Products</button>
           {modalOpen && (
             <Modal
               title="Create Product"
@@ -219,7 +230,7 @@ export default function DashboardProduct() {
                       placeholder="Product Location"
                       onChange={handleChange}
                     />
-                    <button type="submit">Create</button>
+                    <button type="submit" className="capitalize">Submit for review</button>
                   </div>
                 </form>
               }
@@ -265,7 +276,7 @@ export default function DashboardProduct() {
             )}
 
             {products.map((product, index) => (
-              <tr key={product.id}>
+              <tr key={product.id} className="">
                 <td className="py-3 px-4">{index + 1}</td>
                 <td className="py-3 px-4">
                   <img
@@ -283,13 +294,16 @@ export default function DashboardProduct() {
                     )?.name
                   }
                 </td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 flex flex-row justify-center">
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Edit
                   </button>
-                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  <button onClick={() => deleteProduct(product.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                     Delete
                   </button>
+                  <Link to={`/dashboard/products/${product.id}`} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    View
+                  </Link>
                 </td>
               </tr>
             ))}

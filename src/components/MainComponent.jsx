@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import AdminHeader from "../layout/AdminHeader";
 import DashboardCategory from "../pages/dashboard/DashboardCategory";
 import DashboardProduct from "../pages/dashboard/DashboardProduct";
+import DashboardProductItem from "../pages/dashboard/DashboardProductItem";
 
 export default function MainComponent() {
   const { currentUser } = useSelector((state) => state.user);
@@ -37,6 +38,7 @@ export default function MainComponent() {
             <Route path="settings" element={<DashboardSettings />} />
             <Route path="categories" element={<DashboardCategory />} />
             <Route path="products" element={<DashboardProduct />} />
+            <Route path="products/:productId" element={<DashboardProductItem />} />
           </Route>
       </Routes>
       {user ? <div></div> : <Footer />}
