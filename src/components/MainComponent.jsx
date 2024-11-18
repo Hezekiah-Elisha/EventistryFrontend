@@ -16,6 +16,7 @@ import AdminHeader from "../layout/AdminHeader";
 import DashboardCategory from "../pages/dashboard/DashboardCategory";
 import DashboardProduct from "../pages/dashboard/DashboardProduct";
 import DashboardProductItem from "../pages/dashboard/DashboardProductItem";
+import DashboardProductReviews from "../pages/dashboard/DashboardProductReviews";
 
 export default function MainComponent() {
   const { currentUser } = useSelector((state) => state.user);
@@ -39,6 +40,9 @@ export default function MainComponent() {
             <Route path="categories" element={<DashboardCategory />} />
             <Route path="products" element={<DashboardProduct />} />
             <Route path="products/:productId" element={<DashboardProductItem />} />
+            <Route path="products/:productId/edit" element={<DashboardProductItem />} />
+            <Route path="products/review" element={<DashboardProductReviews />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
       </Routes>
       {user ? <div></div> : <Footer />}

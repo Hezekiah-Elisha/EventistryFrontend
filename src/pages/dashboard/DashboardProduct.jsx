@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { instance } from "../../api";
 import Modal from "../../components/Modal";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 
 export default function DashboardProduct() {
   const [products, setProducts] = useState([]);
@@ -134,7 +135,7 @@ export default function DashboardProduct() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div className="flex flex-col gap-2">
@@ -142,7 +143,11 @@ export default function DashboardProduct() {
         <div>
           <h1 className="text-2xl font-bold">Products</h1>
         </div>
-        <div>
+        <div className="flex flex-row justify-end align-middle items-center gap-2">
+          <span onClick={fetchProducts} className="hover:cursor-pointer">
+            <ArrowPathIcon className="size-6" />
+          </span>
+          <Link to="/dashboard/products/review" className="bg-primary text-white font-semibold py-4 px-4 rounded-full font-poppins;" >Review Products</Link>
           <button onClick={handleModal}>Create Products</button>
           {modalOpen && (
             <Modal
@@ -230,7 +235,9 @@ export default function DashboardProduct() {
                       placeholder="Product Location"
                       onChange={handleChange}
                     />
-                    <button type="submit" className="capitalize">Submit for review</button>
+                    <button type="submit" className="capitalize">
+                      Submit for review
+                    </button>
                   </div>
                 </form>
               }
@@ -247,6 +254,7 @@ export default function DashboardProduct() {
               <th className="py-3 px-4 text-left">Image</th>
               <th className="py-3 px-4 text-center">Name</th>
               <th className="py-3 px-4 text-center">Price</th>
+              <th className="py-3 px-4 text-center">Status</th>
               <th className="py-3 px-4 text-center">Category</th>
               <th className="py-3 px-4 text-center">Actions</th>
             </tr>
@@ -275,7 +283,8 @@ export default function DashboardProduct() {
               </tr>
             )}
 
-            {products.map((product, index) => (
+            {products.map((product, index) => 
+              product.publish_status ? (
               <tr key={product.id} className="">
                 <td className="py-3 px-4">{index + 1}</td>
                 <td className="py-3 px-4">
@@ -285,9 +294,21 @@ export default function DashboardProduct() {
                     className="h-12 w-12 rounded-full"
                   />
                 </td>
-                <td className="py-3 px-4">{product.name}</td>
-                <td className="py-3 px-4">{product.price}</td>
-                <td className="py-3 px-4">
+                <td className="py-3 px-4 text-center">{product.name}</td>
+                <td className="py-3 px-4 text-center">{product.price}</td>
+                <td className="py-3 px-4 text-center">
+                  {product.publish_status ? (
+                    <span className="bg-green-500 text-white px-3 py-1 rounded-full">
+                      Published
+                    </span>
+                  ) : (
+                    <span className="bg-red-500 text-white px-3 py-1 rounded-full">
+                      Unpublished
+                    </span>
+                  )}
+                  
+                </td>
+                <td className="py-3 px-4 text-center">
                   {
                     categories.find(
                       (category) => category.id === product.category_id
@@ -298,15 +319,22 @@ export default function DashboardProduct() {
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Edit
                   </button>
-                  <button onClick={() => deleteProduct(product.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  <button
+                    onClick={() => deleteProduct(product.id)}
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  >
                     Delete
                   </button>
-                  <Link to={`/dashboard/products/${product.id}`} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                  <Link
+                    to={`/dashboard/products/${product.id}`}
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                  >
                     View
                   </Link>
                 </td>
               </tr>
-            ))}
+              ) : null 
+            )}
           </tbody>
         </table>
       </div>
